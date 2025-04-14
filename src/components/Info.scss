@@ -1,0 +1,53 @@
+@use "../styles/abstracts/variables" as *;
+.info {
+	// position: absolute;
+	// top: 50%;
+	// left: 50%;
+	z-index: 3;
+	width: 18rem;
+	// height: 15rem;
+    // width: auto;
+    // height: auto;
+	padding: 1rem;
+	background-color: #fef9ed;
+	border-radius: 1rem;
+	box-shadow: 5px 5px 20px rgba(54, 66, 44, 0.1);
+	// text-align: justify;
+	flex-direction: column;
+	gap: 0.5rem;
+	display: flex;
+	font-size: 1rem;
+	// &.show{
+	//     display: flex;
+	// }
+	.btn-group {
+		display: flex;
+		gap: 0.5rem;
+		margin-top: auto;
+		button {
+			flex: 1;
+			text-align: center;
+			padding: 0.4rem;
+			background-color: $clr-brown-light;
+			color:  $clr-brown-dark;
+			border-radius: 0.5rem;
+		}
+	}
+	// &::after {
+	// 	content: "";
+	// 	display: block;
+	// 	border: 20px solid;
+	// 	border-right-color: blue;
+	// 	border-bottom-color: transparent;
+	// 	border-left-color: transparent;
+	// 	border-top-color: transparent;
+	// 	position: absolute;
+	// 	top: -100px;
+	// 	left: 0;
+	// 	z-index: 5;
+	// }
+	.rating {
+		display: inline-flex;
+		gap: 0.5rem;
+	}
+}

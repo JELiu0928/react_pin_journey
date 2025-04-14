@@ -1,0 +1,71 @@
+@use "../styles/abstracts/variables" as *;
+.overlay {
+	// width: ;
+	// height: 200px;
+	// position: fixed;
+	// left: 50%;
+    position: fixed;
+
+	inset: 0;
+    background-color: #00000046;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+	.model {
+		perspective: 1000px;
+		background-color: #fef9ed;
+		width: 18rem;
+		height: 15rem;
+		border-radius: 1rem;
+		padding: 1rem;
+		box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		justify-content: flex-end;
+
+		align-items: center;
+
+		&_icon {
+			position: absolute;
+			width: 10rem;
+			aspect-ratio: 1;
+			background-color: #fef9ed;
+			top: -25%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		& > div > img {
+			width: 70%;
+			display: block;
+			aspect-ratio: 1;
+			transform-style: preserve-3d;
+			// transform:rotateY(0) ;
+			animation: rotate 1s ease-in-out forwards;
+		}
+		.msg {
+			margin-bottom: 3.2rem;
+            color: #5d4037;
+		}
+		button {
+			// margin-top: auto;
+			display: block;
+			text-align: center;
+			width: 80%;
+			padding: 0.4rem;
+			background-color:#D2B48C;
+            color: #5d4037;
+			border-radius: .5rem;
+		}
+	}
+}
+@keyframes rotate {
+	to {
+		transform: rotateY(360deg);
+	}
+}

@@ -1,0 +1,84 @@
+@use "../styles/abstracts/variables" as *;
+@use "sass:color";
+header {
+	background-color: $clr-primary;
+    opacity: .8;
+	box-shadow: 0 0.5rem 0.8rem rgba(77, 77, 77, 0.2);
+    backdrop-filter: blur(10px);
+}
+nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem;
+}
+nav img {
+	width: 100px;
+}
+// nav input[type="checkbox"] {
+	// display: none;
+// }
+
+// nav input[type="checkbox"]:checked ~ input[type="text"] {
+// 	background-color: $clr-primary;
+// 	// color: white;
+// }
+// nav button {
+// 	all: unset;
+// 	background-color:red;
+// 	color: white;
+// 	font-size: 1rem;
+// 	padding: 0.5rem 1rem;
+// 	border-radius: 0.3rem;
+// 	cursor: pointer;
+// 	&:active {
+// 		background-color: color.adjust($clr-primary, $lightness: -5%);
+// 	}
+// }
+
+.search {
+	&_input {
+		position: relative;
+		width: 20rem;
+		text-align: right;
+		& > input {
+			all: unset;
+			font-size: 1rem;
+			width: 0.5rem;
+			padding: 0.5rem 1rem;
+			background-color: color.adjust($clr-primary, $lightness: 5%);
+			border-radius: 2rem;
+			border: 1px solid color.adjust($clr-primary, $lightness: -10%);
+			transition: background-color 0.3s, border 0.3s, width 0.5s cubic-bezier(0.76, 0.18, 0.36, 1.35),opacity .5s;
+            text-align: left;
+            &::placeholder{
+                // color: transparent;
+                color: color.adjust($clr-primary, $lightness: -20%);
+                opacity: 0;
+            }
+            &:hover,&:focus{
+                width: calc(100% - 2.5rem);
+                background-color: color.adjust($clr-primary, $lightness: 10%);
+				border: 2px solid $clr-secondary;
+                &::placeholder{
+                    opacity: 1;
+                }
+            }
+		}
+		&-icon {
+			transition: color 0.3s;
+			position: absolute;
+			right: 0.8rem;
+			top: 50%;
+			transform: translateY(-50%);
+			color: color.adjust($clr-primary, $lightness: -10%);
+            &:hover + input{
+				background-color: color.adjust($clr-primary, $lightness: 10%);
+				border: 2px solid #fff;
+                width: calc(100% - 2.5rem);
+                // pointer-events: none;
+
+			}
+		}
+	}
+}
