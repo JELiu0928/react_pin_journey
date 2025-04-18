@@ -7,21 +7,14 @@ import { ICoordData, LocalInfo } from "../types/type";
 
 interface SidebarProps {
 	localInfo: LocalInfo;
-	setLocalInfo: React.Dispatch<React.SetStateAction<LocalInfo>>
-	setShowMarker: React.Dispatch<React.SetStateAction<boolean>>;
+	setLocalInfo: React.Dispatch<React.SetStateAction<LocalInfo>>;
+	// setShowMarker: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: SidebarProps) => {
-	const { coordinate, setCoordinate, coordArr, setCoordArr, isSidebarOpen, setIsSidebarOpen, editCoord, setEditCoord, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc } = useMapContext();
-	// const [visitDate, setVisitDate] = useState<string>(new Date().toISOString().slice(0, 10));
-	// const [category, setCategory] = useState<string>("restaurant");
-	// const [rating, setRating] = useState<number | null>(0);
-	// const [desc, setDesc] = useState<string>("");
-	const [msg, setMsg] = useState<string>("");
+const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) => {
+	const { cateArr, coordinate, setCoordinate, coordArr, setCoordArr, msg, setMsg, isSidebarOpen, setIsSidebarOpen, setIsShowModel, editCoord, setEditCoord, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc } = useMapContext();
 	const [isCorrect, setIsCorrect] = useState<boolean>(true);
-	const [isShowModel, setIsShowModel] = useState<boolean>(false);
 	const [isEdit, setIsEdit] = useState<boolean>(false);
-	// const [coordArr, setCoordArr] = useState<ICoordData[]>([]);
 	const coord = {
 		id: nanoid(),
 		coordinate,
@@ -33,8 +26,6 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: 
 		address,
 	};
 	useEffect(() => {
-		console.log("Sidebar editCoord", editCoord);
-
 		if (editCoord) {
 			setIsSidebarOpen(true);
 			setVisitDate(editCoord.visitDate);
@@ -94,6 +85,7 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: 
 	const handleClose = () => {
 		setIsSidebarOpen(false);
 		setEditCoord(null);
+		setIsEdit(false);
 	};
 	const handleClear = () => {
 		setVisitDate("");
@@ -121,13 +113,16 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: 
 
 				<div className="form-row">
 					<label htmlFor="category">類別</label>
+
 					<select id="category" name="category" required value={category} onChange={(e) => setCategory(e.target.value)}>
-						<option value="">選擇類別</option>
-						<option value="restaurant">餐廳</option>
-						<option value="attraction">景點</option>
-						<option value="shop">商店</option>
-						<option value="hotel">住宿</option>
-						<option value="other">其他</option>
+                        <option value="">選擇類別</option>
+						{cateArr.map((cate) => {
+							return (
+								<Fragment key={cate.key}>
+									<option value={cate.key}>{cate.value}</option>
+								</Fragment>
+							);
+						})}
 					</select>
 				</div>
 				<div className="form-row rating_zone">
@@ -162,7 +157,7 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: 
 						清除
 					</button>
 					<button type="button" onClick={() => handleSubmit(coord)}>
-						{isEdit ? "送出" : "編輯"}
+						{isEdit ? "編輯" : "送出"}
 					</button>
 					{isSidebarOpen && (
 						<button type="button" className="sidebar_close" onClick={() => handleClose()}>
@@ -173,7 +168,7 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo, setShowMarker }: 
 					)}
 				</div>
 			</form>
-			<Model msg={msg} showModel={{ isShowModel, setIsShowModel }} isCorrect={isCorrect} setIsSidebarOpen={setIsSidebarOpen} setShowMarker={setShowMarker} />
+			<Model msg={msg} isCorrect={isCorrect} setIsSidebarOpen={setIsSidebarOpen} />
 		</>
 	);
 };

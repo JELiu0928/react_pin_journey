@@ -24,9 +24,7 @@
 		flex-direction: column;
 		text-align: center;
 		justify-content: flex-end;
-
 		align-items: center;
-
 		&_icon {
 			position: absolute;
 			width: 10rem;
@@ -52,16 +50,19 @@
 			margin-bottom: 3.2rem;
             color: #5d4037;
 		}
-		button {
-			// margin-top: auto;
-			display: block;
-			text-align: center;
-			width: 80%;
-			padding: 0.4rem;
-			background-color:#D2B48C;
-            color: #5d4037;
-			border-radius: .5rem;
-		}
+		
+        .btn_group{
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            button {
+                flex: 1;
+                padding: 0.4rem;
+                background-color:#D2B48C;
+                color: #5d4037;
+                border-radius: .5rem;
+            }
+        }
 	}
 }
 @keyframes rotate {

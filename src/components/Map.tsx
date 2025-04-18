@@ -1,6 +1,6 @@
 // src/components/Map.tsx
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { useMapContext } from "../contexts/MapContext"; // 引入 MapContext 以獲取座標資訊
+import { useMapContext } from "../contexts/MapContext";
 import { useCallback, useState, Fragment } from "react";
 import Sidebar from "./Sidebar";
 import Info from "./Info";
@@ -22,10 +22,10 @@ type PlaceItem = {
 };
 
 const Map = () => {
-	const { coordinate, setCoordinate, zoom, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
+	const { coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
 	const [localInfo, setLocalInfo] = useState<LocalInfo>({ name: "", address: "" });
 	const [isTaiwan, setIsTaiwan] = useState<boolean>(true);
-	const [isShowMarker, setShowMarker] = useState<boolean>(false);
+	// const [isShowMarker, setShowMarker] = useState<boolean>(false);
 	const [isShowInfo, setIsShowInfo] = useState<boolean>(false);
 	const [selectedCoordId, setSelectedCoordId] = useState<string | null>(null);
 	// 顯示點選附近地點列表
@@ -33,7 +33,6 @@ const Map = () => {
 	const [showPlacesList, setShowPlacesList] = useState<boolean>(false);
 
 	const [map, setMap] = useState<google.maps.Map | null>(null);
-	// const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
 
 	// 設定台灣的 bounds (經緯度範圍)
 	const taiwanBounds = {
@@ -51,15 +50,14 @@ const Map = () => {
 				const lng = e.latLng.lng();
 				const clickCoord = { lat, lng };
 				setCoordinate(clickCoord); // 更新地圖中心點的座標
-				setShowMarker(true);
+				setIsShowMarker(true);
 				setIsShowInfo(false);
 				// 使用 Geocoder 查詢地址或名稱
 				const geocoder = new window.google.maps.Geocoder();
 				geocoder.geocode({ location: clickCoord }, (results, status) => {
 					if (status === "OK" && results && results.length > 0) {
-						console.log(results[0].formatted_address);
+						// console.log(results[0].formatted_address);
 						if (!results[0].formatted_address.includes("台灣") && !results[0].formatted_address.includes("臺灣")) {
-							console.log("不是台灣");
 							setIsTaiwan(false);
 						} else {
 							setIsTaiwan(true);
@@ -73,8 +71,6 @@ const Map = () => {
 								},
 								(places, placeStatus) => {
 									if (placeStatus === window.google.maps.places.PlacesServiceStatus.OK && places && places.length > 0) {
-										console.log("附近地點:", places);
-
 										// 過濾掉沒有名稱或地址的結果，最多顯示5個
 										// : place is PlaceItem 型別守衛語法（type predicate）：如果回傳 true，那這個 place 就是 PlaceItem 型別
 										// !!place.name用來把任何值「轉成布林值」
@@ -124,11 +120,7 @@ const Map = () => {
 
 	// 選擇地點
 	const nearPlaceSelect = (place: PlaceItem) => {
-		console.log("place", place);
-		setLocalInfo({
-			name: place.name,
-			address: place.vicinity,
-		});
+		// console.log('1...',place)
 
 		// 選擇後獲取更詳細的地址資訊
 		const placesService = new window.google.maps.places.PlacesService(document.createElement("div"));
@@ -138,8 +130,9 @@ const Map = () => {
 				fields: ["name", "formatted_address", "geometry"],
 			},
 			(placeDetails, status) => {
-				console.log("placeDetails", placeDetails);
 				if (status === window.google.maps.places.PlacesServiceStatus.OK && placeDetails) {
+					// console.log("2...", placeDetails);
+					// user選擇後 set名稱和地址
 					setLocalInfo({
 						name: placeDetails.name || place.name,
 						address: placeDetails.formatted_address || place.vicinity,
@@ -156,61 +149,7 @@ const Map = () => {
 		setIsSidebarOpen(true);
 	};
 
-	// useEffect(() => {
-
-	// }, []);
-	// useEffect(() => {
-	//     // 只有當地圖加載且有選中的坐標且需要顯示信息時執行
-	//     if (map && selectedCoordId && isShowInfo) {
-	//       // 找到選中的坐標對象
-	//       const selectedCoord = coordArr.find((c) => c.id === selectedCoordId);
-
-	//       if (selectedCoord) {
-	//         // 創建一個 DOM 容器
-	//         const container = document.createElement('div');
-
-	//         // 使用 createRoot 創建 React 18 的根
-	//         const root = createRoot(container);
-
-	//         // 渲染你的 Info 組件到容器
-	//         root.render(
-	//           <Info
-	//             coord={selectedCoord}
-	//             showInfo={{isShowInfo, setIsShowInfo}}
-	//           />
-	//         );
-
-	//         // 創建 InfoWindow 並設置內容
-	//         const infoWindow = new google.maps.InfoWindow({
-	//           content: container,
-	//           pixelOffset: new google.maps.Size(0, -35),
-	//           maxWidth: 0 // 禁用最大寬度限制
-	//         });
-
-	//         // 設置位置並打開
-	//         infoWindow.setPosition({
-	//           lat: selectedCoord.coordinate.lat,
-	//           lng: selectedCoord.coordinate.lng
-	//         });
-	//         infoWindow.open(map);
-
-	//         // 添加關閉事件監聽
-	//         google.maps.event.addListener(infoWindow, 'closeclick', () => {
-	//           setIsShowInfo(false);
-	//         });
-
-	//         // 清理函數
-	//         return () => {
-	//           root.unmount(); // 卸載 React 組件
-	//           infoWindow.close(); // 關閉 InfoWindow
-	//           google.maps.event.clearInstanceListeners(infoWindow); // 清除事件監聽器
-	//         };
-	//       }
-	//     }
-	//   }, [selectedCoordId, isShowInfo, map, coordArr]);
-
 	const handleShowInfo = (id: string) => {
-		console.log("coordArr", coordArr);
 		setSelectedCoordId(id);
 		setShowPlacesList(false);
 		setIsShowInfo(true);
@@ -231,7 +170,7 @@ const Map = () => {
 		<>
 			<div className="map_content-container">
 				<div className={`map_content-sidebar ${isSidebarOpen ? "open" : ""}`}>
-					<Sidebar localInfo={localInfo} setLocalInfo={setLocalInfo} setShowMarker={setShowMarker} />
+					<Sidebar localInfo={localInfo} setLocalInfo={setLocalInfo} />
 				</div>
 				<div className="map_content-map">
 					{coordinate && (
@@ -261,11 +200,7 @@ const Map = () => {
 											position={{ lat: coord.coordinate.lat, lng: coord.coordinate.lng }}
 											onClick={() => handleShowInfo(coord.id)}
 										/>
-										{/* {isShowInfo && selectedCoordId == coord.id && (
-											<OverlayView position={{ lat: coord.coordinate.lat, lng: coord.coordinate.lng }} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-												<Info coord={coord} showInfo={{ isShowInfo, setIsShowInfo }} />
-											</OverlayView>
-										)} */}
+
 										{isShowInfo && selectedCoordId == coord.id && map && (
 											<MapOverlayPortal map={map} position={coord.coordinate}>
 												<Info coord={coord} setIsShowInfo={setIsShowInfo} />
@@ -288,7 +223,7 @@ const Map = () => {
 								transition={{ duration: 0.3 }} // 設置過渡時間
 							>
 								<h3>選擇地點</h3>
-								<p>點擊地圖附近找到以下地點：</p>
+								<p>點擊地圖後，找到以下地點：</p>
 								<ul className="place_list">
 									{nearbyPlaces.map((place) => (
 										<li key={place.place_id} className={`place_item ${localInfo.name === place.name ? "selected" : ""}`} onClick={() => nearPlaceSelect(place)}>
@@ -303,31 +238,6 @@ const Map = () => {
 							</motion.div>
 						)}
 					</AnimatePresence>
-					{/* <AnimatePresence>
-						{showPlacesList && nearbyPlaces.length > 0 && (
-							<motion.div
-								className="panel_nearby"
-								initial={{ opacity: 0 }} // 初始狀態
-								animate={{ opacity: 1 }} // 顯示時的動畫
-								exit={{ opacity: 0 }} // 隱藏時的動畫
-								transition={{ duration: 1 }} // 設置過渡時間
-							>
-								<h3>選擇地點</h3>
-								<p>點擊地圖附近找到以下地點：</p>
-								<ul className="place_list">
-									{nearbyPlaces.map((place) => (
-										<li key={place.place_id} className={`place_item ${localInfo.name === place.name ? "selected" : ""}`} onClick={() => nearPlaceSelect(place)}>
-											<div className="place_name">{place.name}</div>
-											<div className="place_address">{place.vicinity}</div>
-										</li>
-									))}
-								</ul>
-								<div className="panel_btn">
-									<button onClick={() => setShowPlacesList(false)}>取消</button>
-								</div>
-							</motion.div>
-						)}
-					</AnimatePresence> */}
 				</div>
 			</div>
 		</>

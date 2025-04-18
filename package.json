@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+    "homepage": "https://jeliu0928.github.io/react_pin_journey/",
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",

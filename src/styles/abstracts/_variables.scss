@@ -8,4 +8,5 @@ $clr-yellow:#ffdd54;
 // $clr-secondary: #5a8459;
 $clr-brown-light:#d2b48c;
 $clr-brown-dark:#5d4037;
+$clr-step-desc:rgb(226, 40, 3);
 $test: color.adjust($clr-tertiary, $lightness: -20%);

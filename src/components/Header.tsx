@@ -1,13 +1,14 @@
 import logoLarge from "/logo_large.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import "./header.scss";
 import { useEffect, useRef } from "react";
 import { useMapContext } from "../contexts/MapContext";
+import Step from "./Step";
 
 const Header = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const { setCoordinate, setZoom, setIsSidebarOpen } = useMapContext();
+	const { setIsShowMarker,setCoordinate, setZoom, setIsSidebarOpen, setIsShowStep } = useMapContext();
 
 	useEffect(() => {
 		if (!window.google || !inputRef.current) return;
@@ -18,7 +19,7 @@ const Header = () => {
 		});
 		// 選擇地點後，place_changed會觸發
 		autoComplete.addListener("place_changed", () => {
-			setIsSidebarOpen(true);
+			// setIsSidebarOpen(true);
 			setZoom(15);
 
 			const place = autoComplete.getPlace();
@@ -26,20 +27,31 @@ const Header = () => {
 				const lat = place.geometry.location.lat();
 				const lng = place.geometry.location.lng();
 				setCoordinate({ lat, lng });
-				// console.log("place", place);
+                setIsShowMarker(true)
 			}
 		});
 	}, [setCoordinate, setZoom, setIsSidebarOpen]);
 	return (
-		<header>
-			<nav>
-				<img src={logoLarge} alt="logo" />
-				<div className="search_input">
-					<FontAwesomeIcon className="search_input-icon" icon={faSearch} />
-					<input type="text" ref={inputRef} placeholder="請輸入關鍵字後點選地點..." />
-				</div>
-			</nav>
-		</header>
+		<>
+			<header>
+				<nav>
+					<img src={logoLarge} alt="logo" />
+					<div className="search_input">
+						<FontAwesomeIcon className="search_input-icon" icon={faSearch} />
+						<input type="text" ref={inputRef} placeholder="請輸入關鍵字後點選地點..." />
+					</div>
+					<button
+						className="info_btn"
+						onClick={() => {
+							setIsShowStep(true);
+						}}
+					>
+						<FontAwesomeIcon icon={faCircleInfo} />
+					</button>
+				</nav>
+			</header>
+            <Step/>
+		</>
 	);
 };
 export default Header;

@@ -8,8 +8,12 @@ interface MapContextProps {
 	setCoordinate: (coord: Coordinate) => void;
 	zoom: number;
 	setZoom: (zoom: number) => void;
+	isShowMarker: boolean;
+	setIsShowMarker: React.Dispatch<React.SetStateAction<boolean>>;
 	isSidebarOpen: boolean;
 	setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	isShowModel: boolean;
+	setIsShowModel: React.Dispatch<React.SetStateAction<boolean>>;
 	coordArr: ICoordData[];
 	setCoordArr: (newCoordArr: ICoordData[] | ((prevState: ICoordData[]) => ICoordData[])) => void;
 	editCoord: ICoordData | null;
@@ -22,32 +26,33 @@ interface MapContextProps {
 	setRating: (rating: number) => void;
 	desc: string;
 	setDesc: (desc: string) => void;
+	msg: string;
+	setMsg: (desc: string) => void;
+
+	isDelMode: boolean;
+	setIsDelMode: React.Dispatch<React.SetStateAction<boolean>>;
+	isShowStep: boolean;
+	setIsShowStep: React.Dispatch<React.SetStateAction<boolean>>;
+
+	// isDel: boolean;
+	// setIsDel: React.Dispatch<React.SetStateAction<boolean>>;
+	targetToDelete: ICoordData | null;
+	setTargetToDelete: (coord: ICoordData | null) => void;
 }
 
 const MapContext = createContext<MapContextProps | undefined>(undefined);
 
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 	const cateArr: Cate[] = [
-		{
-			key: "restaurant",
-			value: "餐廳",
-		},
-		{
-			key: "attraction",
-			value: "景點",
-		},
-		{
-			key: "shop",
-			value: "商店",
-		},
-		{
-			key: "hotel",
-			value: "住宿",
-		},
-		{
-			key: "other",
-			value: "其他",
-		},
+        { key: "restaurant", value: "餐廳" },
+        { key: "cafe", value: "咖啡 / 飲料" }, 
+        { key: "attraction", value: "景點" },
+        { key: "shopping", value: "逛街購物" },
+        { key: "hotel", value: "住宿" },
+        { key: "park", value: "公園 / 自然" },
+        { key: "transport", value: "交通" },
+        { key: "activity", value: "活動 / 展覽" },
+        { key: "other", value: "其他" },
 	];
 	const [visitDate, setVisitDate] = useState<string>(new Date().toISOString().slice(0, 10));
 	const [category, setCategory] = useState<string>("restaurant");
@@ -55,15 +60,19 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 	const [desc, setDesc] = useState<string>("");
 	const [coordinate, setCoordinate] = useState<Coordinate>({ lat: 23.6978, lng: 120.9605 });
 	const [zoom, setZoom] = useState<number>(8);
+    const [isShowMarker, setIsShowMarker] = useState<boolean>(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+	const [isShowModel, setIsShowModel] = useState<boolean>(false);
+	const [isDelMode, setIsDelMode] = useState<boolean>(false);
+	const [msg, setMsg] = useState<string>("");
+	const [targetToDelete, setTargetToDelete] = useState<ICoordData | null>(null);
 	const [coordArr, setCoordArr] = useState<ICoordData[]>(() => {
 		const savedCoord = localStorage.getItem("coord");
-		// 如果有資料，就解析並設置為初始值，否則設置為空陣列
 		return savedCoord ? JSON.parse(savedCoord) : [];
 	});
 	const [editCoord, setEditCoord] = useState<ICoordData | null>(null);
-
-	return <MapContext.Provider value={{ coordinate, setCoordinate, zoom, setZoom, isSidebarOpen, setIsSidebarOpen, coordArr, setCoordArr, editCoord, setEditCoord, cateArr, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc }}>{children}</MapContext.Provider>;
+	const [isShowStep, setIsShowStep] = useState<boolean>(false);
+	return <MapContext.Provider value={{ coordinate, setCoordinate, zoom, setZoom,isShowMarker, setIsShowMarker, msg, setMsg, isSidebarOpen, setIsSidebarOpen, isShowModel, setIsShowModel, coordArr, setCoordArr, editCoord, setEditCoord, cateArr, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc, isDelMode, setIsDelMode, targetToDelete, setTargetToDelete,isShowStep, setIsShowStep }}>{children}</MapContext.Provider>;
 };
 
 // 自定義 Hook 用來使用 MapContext
