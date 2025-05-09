@@ -8,7 +8,7 @@ import Step from "./Step";
 
 const Header = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const { setIsShowMarker,setCoordinate, setZoom, setIsSidebarOpen, setIsShowStep } = useMapContext();
+	const { map, setIsShowMarker, setCoordinate, setIsSidebarOpen, setIsShowStep } = useMapContext();
 
 	useEffect(() => {
 		if (!window.google || !inputRef.current) return;
@@ -19,18 +19,23 @@ const Header = () => {
 		});
 		// 選擇地點後，place_changed會觸發
 		autoComplete.addListener("place_changed", () => {
+			if (inputRef.current) inputRef.current.value = "";
 			// setIsSidebarOpen(true);
-			setZoom(15);
+			// setZoom(15);
 
 			const place = autoComplete.getPlace();
 			if (place.geometry?.location) {
 				const lat = place.geometry.location.lat();
 				const lng = place.geometry.location.lng();
 				setCoordinate({ lat, lng });
-                setIsShowMarker(true)
+				setIsShowMarker(true);
+				if (map) {
+					map.setCenter({ lat, lng });
+					map.setZoom(14); // 或你需要的縮放級別
+				}
 			}
 		});
-	}, [setCoordinate, setZoom, setIsSidebarOpen]);
+	}, [map, setCoordinate, setIsSidebarOpen]);
 	return (
 		<>
 			<header>
@@ -50,7 +55,7 @@ const Header = () => {
 					</button>
 				</nav>
 			</header>
-            <Step/>
+			<Step />
 		</>
 	);
 };

@@ -9,9 +9,7 @@
 	position: relative;
 	.btn_group {
 		display: flex;
-		// gap: 0.5rem;
 		margin-top: auto;
-		// overflow: hidden;
 		margin-inline: -1rem;
 	}
 	.btn_clear {
@@ -56,7 +54,6 @@
 	}
 }
 .text_area {
-	// position: relative;
 	textarea {
 		all: unset;
 		display: block;
@@ -65,9 +62,6 @@
 		padding: 0.5rem;
 		border-radius: 5px;
 		background-color: #f4f1de;
-		&:focus + label {
-			// top: 0;
-		}
 		&:focus {
 			border: 1px solid $clr-tertiary;
 		}

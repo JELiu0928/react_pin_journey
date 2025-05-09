@@ -4,10 +4,14 @@ import { ICoordData, Coordinate, Cate } from "../types/type";
 // type Coordinate = { lat: number; lng: number };
 interface MapContextProps {
 	cateArr: Cate[];
+    map:google.maps.Map | null
+    setMap:React.Dispatch<React.SetStateAction<google.maps.Map | null>>
+
 	coordinate: Coordinate;
 	setCoordinate: (coord: Coordinate) => void;
 	zoom: number;
 	setZoom: (zoom: number) => void;
+
 	isShowMarker: boolean;
 	setIsShowMarker: React.Dispatch<React.SetStateAction<boolean>>;
 	isSidebarOpen: boolean;
@@ -54,6 +58,8 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
         { key: "activity", value: "活動 / 展覽" },
         { key: "other", value: "其他" },
 	];
+	const [map, setMap] = useState<google.maps.Map | null>(null);
+
 	const [visitDate, setVisitDate] = useState<string>(new Date().toISOString().slice(0, 10));
 	const [category, setCategory] = useState<string>("restaurant");
 	const [rating, setRating] = useState<number>(0);
@@ -72,7 +78,7 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 	});
 	const [editCoord, setEditCoord] = useState<ICoordData | null>(null);
 	const [isShowStep, setIsShowStep] = useState<boolean>(false);
-	return <MapContext.Provider value={{ coordinate, setCoordinate, zoom, setZoom,isShowMarker, setIsShowMarker, msg, setMsg, isSidebarOpen, setIsSidebarOpen, isShowModel, setIsShowModel, coordArr, setCoordArr, editCoord, setEditCoord, cateArr, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc, isDelMode, setIsDelMode, targetToDelete, setTargetToDelete,isShowStep, setIsShowStep }}>{children}</MapContext.Provider>;
+	return <MapContext.Provider value={{ map, setMap,coordinate, setCoordinate, zoom, setZoom,isShowMarker, setIsShowMarker, msg, setMsg, isSidebarOpen, setIsSidebarOpen, isShowModel, setIsShowModel, coordArr, setCoordArr, editCoord, setEditCoord, cateArr, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc, isDelMode, setIsDelMode, targetToDelete, setTargetToDelete,isShowStep, setIsShowStep }}>{children}</MapContext.Provider>;
 };
 
 // 自定義 Hook 用來使用 MapContext

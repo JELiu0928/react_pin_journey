@@ -22,7 +22,7 @@ type PlaceItem = {
 };
 
 const Map = () => {
-	const { coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
+	const { map, setMap, coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
 	const [localInfo, setLocalInfo] = useState<LocalInfo>({ name: "", address: "" });
 	const [isTaiwan, setIsTaiwan] = useState<boolean>(true);
 	// const [isShowMarker, setShowMarker] = useState<boolean>(false);
@@ -31,8 +31,6 @@ const Map = () => {
 	// 顯示點選附近地點列表
 	const [nearbyPlaces, setNearbyPlaces] = useState<PlaceItem[]>([]);
 	const [showPlacesList, setShowPlacesList] = useState<boolean>(false);
-
-	const [map, setMap] = useState<google.maps.Map | null>(null);
 
 	// 設定台灣的 bounds (經緯度範圍)
 	const taiwanBounds = {
@@ -50,7 +48,6 @@ const Map = () => {
 				const lng = e.latLng.lng();
 				const clickCoord = { lat, lng };
 				setCoordinate(clickCoord); // 更新地圖中心點的座標
-				setIsShowMarker(true);
 				setIsShowInfo(false);
 				// 使用 Geocoder 查詢地址或名稱
 				const geocoder = new window.google.maps.Geocoder();
@@ -61,6 +58,7 @@ const Map = () => {
 							setIsTaiwan(false);
 						} else {
 							setIsTaiwan(true);
+
 							// 只有在台灣範圍內，才查詢附近地點
 							// 使用 Places API 查詢附近地點
 							const placesService = new window.google.maps.places.PlacesService(document.createElement("div"));
@@ -71,6 +69,8 @@ const Map = () => {
 								},
 								(places, placeStatus) => {
 									if (placeStatus === window.google.maps.places.PlacesServiceStatus.OK && places && places.length > 0) {
+                                        console.log('places',places)
+                                        console.log(' places.length > 0', places.length > 0)
 										// 過濾掉沒有名稱或地址的結果，最多顯示5個
 										// : place is PlaceItem 型別守衛語法（type predicate）：如果回傳 true，那這個 place 就是 PlaceItem 型別
 										// !!place.name用來把任何值「轉成布林值」
@@ -88,16 +88,19 @@ const Map = () => {
 
 										// 默認選擇第一個地點
 										if (filteredPlaces.length > 0) {
+                                            setIsShowMarker(true);
+
 											setLocalInfo({
 												name: filteredPlaces[0].name,
 												address: filteredPlaces[0].vicinity,
 											});
 										}
 									} else {
+                                        setIsShowMarker(false);
+
 										// 如果沒有找到附近地點，則使用原來的 getDetails 方法
 										const placeId = results[0].place_id;
 										const placesService = new window.google.maps.places.PlacesService(document.createElement("div"));
-
 										placesService.getDetails({ placeId }, (placeDetails, status) => {
 											if (status === google.maps.places.PlacesServiceStatus.OK && placeDetails) {
 												const name = placeDetails.name || "查無名稱";
@@ -151,8 +154,8 @@ const Map = () => {
 
 	const handleShowInfo = (id: string) => {
 		setSelectedCoordId(id);
-		setShowPlacesList(false);
 		setIsShowInfo(true);
+		setShowPlacesList(false);
 		setIsSidebarOpen(false);
 	};
 
