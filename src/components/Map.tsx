@@ -1,26 +1,27 @@
 // src/components/Map.tsx
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useMapContext } from "../contexts/MapContext";
-import { useCallback, useState, Fragment } from "react";
+import { useCallback, useState, Fragment, useRef, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Info from "./Info";
 import pin01 from "../assets/pin01.png";
 import pin02 from "../assets/pin02.png";
 import pin03 from "../assets/pin03.png";
 import { ICoordData, LocalInfo } from "../types/type";
-// import { IStorageData } from "../types/type";
 import "./Map.scss";
-// import { createRoot } from "react-dom/client";
 import { MapOverlayPortal } from "./MapOverlayPortal";
 import { motion, AnimatePresence } from "framer-motion"; // 引入 framer-motion
+import gsap from "gsap";
 
+import Logo from "./Logo";
+import { useGSAP } from "@gsap/react";
+import { useLocation, useNavigate } from "react-router-dom";
 // 新增的地點選擇類型
 type PlaceItem = {
 	place_id: string;
 	name: string;
 	vicinity: string;
 };
-
 const Map = () => {
 	const { map, setMap, coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
 	const [localInfo, setLocalInfo] = useState<LocalInfo>({ name: "", address: "" });
@@ -31,7 +32,7 @@ const Map = () => {
 	// 顯示點選附近地點列表
 	const [nearbyPlaces, setNearbyPlaces] = useState<PlaceItem[]>([]);
 	const [showPlacesList, setShowPlacesList] = useState<boolean>(false);
-
+	const overlaysRef = useRef(null);
 	// 設定台灣的 bounds (經緯度範圍)
 	const taiwanBounds = {
 		north: 25.4971, // 北部
@@ -40,6 +41,56 @@ const Map = () => {
 		west: 118.0, // 西部
 	};
 
+	const mapLogoRef = useRef(null);
+	const location = useLocation();
+	const navi = useNavigate();
+	const fromHome = location.state?.fromHome;
+	useGSAP(
+		() => {
+			if (!fromHome) {
+				gsap.set(overlaysRef.current, { display: "none" });
+				return;
+			}
+			gsap.set(overlaysRef.current, { display: "flex" });
+			const tl = gsap.timeline();
+			tl.to(mapLogoRef.current, {
+				delay: 1.5,
+				duration: 1,
+				width: 115,
+				left: 0,
+				top: 0,
+				padding: "0.5rem",
+				transform: "none",
+				yPercent: 50,
+				xPercent: 50,
+				opacity: 0.8,
+			})
+				.to(mapLogoRef.current, { opacity: 0 })
+				.fromTo(
+					".overlay",
+					{ opacity: 1, y: 0 },
+					{
+						duration: 0.8,
+						yPercent: -100,
+						stagger: 0.5,
+						ease: "power2.out",
+						onComplete: () => {
+							gsap.set(overlaysRef.current, {
+								display: "none",
+							});
+						},
+					},
+					"-=1"
+				);
+		},
+		{ scope: overlaysRef }
+	);
+	useEffect(() => {
+		if (location.state?.fromHome) {
+			// 在動畫播放後，將狀態重置，避免刷新後重複動畫
+			navi(location.pathname, { replace: true, state: {} });
+		}
+	}, [location, navi]);
 	//地圖點擊
 	const onMapClick = useCallback(
 		(e: google.maps.MapMouseEvent) => {
@@ -69,8 +120,8 @@ const Map = () => {
 								},
 								(places, placeStatus) => {
 									if (placeStatus === window.google.maps.places.PlacesServiceStatus.OK && places && places.length > 0) {
-                                        console.log('places',places)
-                                        console.log(' places.length > 0', places.length > 0)
+										// console.log("places", places);
+										// console.log(" places.length > 0", places.length > 0);
 										// 過濾掉沒有名稱或地址的結果，最多顯示5個
 										// : place is PlaceItem 型別守衛語法（type predicate）：如果回傳 true，那這個 place 就是 PlaceItem 型別
 										// !!place.name用來把任何值「轉成布林值」
@@ -88,7 +139,7 @@ const Map = () => {
 
 										// 默認選擇第一個地點
 										if (filteredPlaces.length > 0) {
-                                            setIsShowMarker(true);
+											setIsShowMarker(true);
 
 											setLocalInfo({
 												name: filteredPlaces[0].name,
@@ -96,7 +147,7 @@ const Map = () => {
 											});
 										}
 									} else {
-                                        setIsShowMarker(false);
+										setIsShowMarker(false);
 
 										// 如果沒有找到附近地點，則使用原來的 getDetails 方法
 										const placeId = results[0].place_id;
@@ -172,6 +223,15 @@ const Map = () => {
 	return (
 		<>
 			<div className="map_content-container">
+				<div className="map__overlays" ref={overlaysRef}>
+					<div className="overlay"></div>
+					<div className="overlay"></div>
+					<div className="overlay"></div>
+					<div className="overlay"></div>
+					<div className="map__logo" ref={mapLogoRef}>
+						<Logo />
+					</div>
+				</div>
 				<div className={`map_content-sidebar ${isSidebarOpen ? "open" : ""}`}>
 					<Sidebar localInfo={localInfo} setLocalInfo={setLocalInfo} />
 				</div>

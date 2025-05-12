@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import "./step.scss";
+import "./Step.scss";
 import map01 from "../assets/map01.png";
 import map02 from "../assets/map02.png";
 import { useMapContext } from "../contexts/MapContext";
@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function Step() {
-	// console.log("Step 組件 render");
 	const { isShowStep, setIsShowStep } = useMapContext();
 	const [currentMap, setCurrentMap] = useState<number>(1);
 	const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
@@ -63,14 +62,14 @@ function Step() {
 		{
 			step: 1,
 			s_position: { left: "42%", top: "37%" },
-			desc: "畫面會依據評分有不同圖釘，點選圖釘",
+			desc: "畫面會依據評分有不同圖釘",
 			d_position: { left: "43.5%", top: "39%" },
 			delay: "0.5s",
 		},
 		{
 			step: 2,
 			s_position: { left: "55%", top: "55%" },
-			desc: "即可操作編輯與刪除",
+			desc: "點選圖釘後，即可操作編輯與刪除",
 			d_position: { left: "56.5%", top: "57%" },
 			delay: "2.5s",
 		},

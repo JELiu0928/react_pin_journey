@@ -1,13 +1,10 @@
 @use "../styles/abstracts/variables" as *;
-.overlay {
-	// width: ;
-	// height: 200px;
-	// position: fixed;
-	// left: 50%;
-    position: fixed;
+@use "../styles/abstracts/mixins" as *;
 
+.model_overlay {
+    position: fixed;
 	inset: 0;
-    background-color: #00000046;
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,9 +17,9 @@
 		border-radius: 1rem;
 		padding: 1rem;
 		box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
+		text-align: center;
 		display: flex;
 		flex-direction: column;
-		text-align: center;
 		justify-content: flex-end;
 		align-items: center;
 		&_icon {
@@ -43,24 +40,20 @@
 			display: block;
 			aspect-ratio: 1;
 			transform-style: preserve-3d;
-			// transform:rotateY(0) ;
 			animation: rotate 1s ease-in-out forwards;
 		}
 		.msg {
 			margin-bottom: 3.2rem;
-            color: #5d4037;
+            color: $clr-brown-dark;
 		}
 		
         .btn_group{
+            width: 100%;
             display: flex;
             gap: 0.5rem;
-            width: 100%;
             button {
                 flex: 1;
-                padding: 0.4rem;
-                background-color:#D2B48C;
-                color: #5d4037;
-                border-radius: .5rem;
+                @include brownBtn;
             }
         }
 	}

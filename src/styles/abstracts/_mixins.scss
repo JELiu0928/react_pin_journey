@@ -1,0 +1,25 @@
+@use "./variables" as *;
+@use "sass:color";
+
+@mixin greenBtn {
+	padding: 8px 16px;
+	background: $clr-tertiary;
+	border: none;
+	border-radius: 4px;
+	color: $clr-secondary;
+	transition: background-color 300ms;
+	&:hover {
+		background: color.adjust($clr-tertiary, $lightness: 5%);
+	}
+}
+@mixin brownBtn {
+	padding: 0.4rem;
+	background-color: $clr-brown-light;
+	color: $clr-brown-dark;
+	border-radius: 0.5rem;
+	transition: background-color 300ms;
+    
+	&:hover {
+		background: color.adjust($clr-brown-light, $lightness: 5%);
+	}
+}

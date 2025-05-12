@@ -1,15 +1,19 @@
 import logoLarge from "/logo_large.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import "./header.scss";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import "./Header.scss";
 import { useEffect, useRef } from "react";
 import { useMapContext } from "../contexts/MapContext";
-import Step from "./Step";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const { map, setIsShowMarker, setCoordinate, setIsSidebarOpen, setIsShowStep } = useMapContext();
-
+	const { map, setIsShowMarker, setCoordinate, setIsSidebarOpen } = useMapContext();
+    const navi = useNavigate()
+    // const logoRef = useRef(null)
+    const goToHome = ()=>{
+        navi('/')
+    }
 	useEffect(() => {
 		if (!window.google || !inputRef.current) return;
 
@@ -20,8 +24,6 @@ const Header = () => {
 		// 選擇地點後，place_changed會觸發
 		autoComplete.addListener("place_changed", () => {
 			if (inputRef.current) inputRef.current.value = "";
-			// setIsSidebarOpen(true);
-			// setZoom(15);
 
 			const place = autoComplete.getPlace();
 			if (place.geometry?.location) {
@@ -40,22 +42,13 @@ const Header = () => {
 		<>
 			<header>
 				<nav>
-					<img src={logoLarge} alt="logo" />
+					<img src={logoLarge} alt="logo" onClick={goToHome}/>
 					<div className="search_input">
 						<FontAwesomeIcon className="search_input-icon" icon={faSearch} />
 						<input type="text" ref={inputRef} placeholder="請輸入關鍵字後點選地點..." />
 					</div>
-					<button
-						className="info_btn"
-						onClick={() => {
-							setIsShowStep(true);
-						}}
-					>
-						<FontAwesomeIcon icon={faCircleInfo} />
-					</button>
 				</nav>
 			</header>
-			<Step />
 		</>
 	);
 };

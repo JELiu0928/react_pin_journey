@@ -1,10 +1,12 @@
 @use "../styles/abstracts/variables" as *;
+@use "../styles/abstracts/mixins" as *;
 @use "sass:color";
 
 .map_content {
 	&-container {
 		position: relative;
-		height: calc(100vh - 100px + 1rem);
+        // 減掉header高
+		height: calc(100vh - 78.65px);
 	}
 	&-sidebar {
 		position: absolute;
@@ -42,105 +44,91 @@
 		}
 	}
 }
-
+.map__overlays {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	inset: 0;
+	z-index: 999;
+	display: flex;
+	.overlay {
+		flex: 1;
+		background-color: $clr-primary;
+	}
+}
+.map__logo {
+	width: 300px;
+	height: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
+}
 // 附近地點選擇列表樣式
-.panel{
+.panel {
+	&_nearby {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		width: 300px;
+		max-height: 31.25rem;
+		overflow-y: auto;
+		background: $clr-secondary;
+		border-radius: 0.5rem;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		padding: 1rem;
+		z-index: 50;
+		color: $clr-tertiary;
+		h3 {
+			margin-bottom: 0.6rem;
+			font-size: 1.2rem;
+		}
+		p {
+			margin-bottom: 15px;
+			font-size: 0.875rem;
+			letter-spacing: 0.5px;
+			color: color.adjust($clr-tertiary, $lightness: 20%);
+		}
+	}
+	&_btn {
+		margin-top: 15px;
+		text-align: right;
 
-    &_nearby {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        max-height: 31.25rem;
-        overflow-y: auto;
-        background: $clr-secondary;
-        border-radius: .5rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        padding: 1rem;
-        z-index: 50;
-        color: $clr-tertiary;
-        h3 {
-            margin-bottom: 0.6rem;
-            font-size: 1.2rem;
-        }
-        p {
-            margin-bottom: 15px;
-            font-size: 0.875rem ;
-            letter-spacing: .5px;
-            color: color.adjust($clr-tertiary, $lightness: 20%);
-        }
-    }
-    &_btn {
-        margin-top: 15px;
-        text-align: right;
-    
-        button {
-            padding: 8px 16px;
-            background: $clr-tertiary;
-            border: none;
-            border-radius: 4px;
-            color: $clr-secondary;
-            // cursor: pointer;
-    
-            &:hover {
-                // background: #e0e0e0;
-            }
-        }
-    }
-    
+		button {
+            @include greenBtn;
+		}
+	}
 }
 
-.place{
-    &_item {
-        padding: 12px;
-        border-bottom: 1px solid color.adjust($clr-secondary, $lightness: -8%);
-        cursor: pointer;
-        transition: background-color 0.2s;
-    
-        &:hover {
-            background-color:color.adjust($clr-secondary, $lightness: 5%);
-        }
-    
-        &.selected {
-            background-color: color.adjust($clr-secondary, $lightness: 10%);
-            border-left: 3px solid $clr-yellow;
-        }
-    
-        &:last-child {
-            border-bottom: none;
-        }
-    }
-    &_name {
-        font-weight: 500;
-        font-size: 16px;
-        margin-bottom: 4px;
-    }
-    &_address {
-        color: color.adjust($clr-tertiary, $lightness: 20%);
-        font-size: 0.875rem;
-        margin-bottom: 4px;
-    }
+.place {
+	&_item {
+		padding: 12px;
+		border-bottom: 1px solid color.adjust($clr-secondary, $lightness: -8%);
+		cursor: pointer;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: color.adjust($clr-secondary, $lightness: 5%);
+		}
+
+		&.selected {
+			background-color: color.adjust($clr-secondary, $lightness: 10%);
+			border-left: 3px solid $clr-yellow;
+		}
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+	&_name {
+		font-weight: 500;
+		font-size: 16px;
+		margin-bottom: 4px;
+	}
+	&_address {
+		color: color.adjust($clr-tertiary, $lightness: 20%);
+		font-size: 0.875rem;
+		margin-bottom: 4px;
+	}
 }
-
-
-/* 移除 InfoWindow 默認樣式 */
-// .gm-style-iw {
-//     padding: 0 !important;
-//     background: transparent !important;
-//     box-shadow: none !important;
-//     border: none !important;
-//   }
-  
-//   .gm-style-iw-d {
-//     overflow: visible !important;
-//     padding: 0 !important;
-//   }
-  
-//   .gm-style-iw-c {
-//     background: none !important;
-//     box-shadow: none !important;
-//   }
-  
-//   .gm-style .gm-style-iw-t::after {
-//     display: none !important; /* 移除指向標記的三角形 */
-//   }

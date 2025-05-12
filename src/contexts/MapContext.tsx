@@ -38,8 +38,6 @@ interface MapContextProps {
 	isShowStep: boolean;
 	setIsShowStep: React.Dispatch<React.SetStateAction<boolean>>;
 
-	// isDel: boolean;
-	// setIsDel: React.Dispatch<React.SetStateAction<boolean>>;
 	targetToDelete: ICoordData | null;
 	setTargetToDelete: (coord: ICoordData | null) => void;
 }

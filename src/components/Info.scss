@@ -1,4 +1,7 @@
 @use "../styles/abstracts/variables" as *;
+@use "../styles/abstracts/mixins" as *;
+@use "sass:color";
+
 .info {
 	z-index: 3;
 	width: 18rem;
@@ -6,36 +9,31 @@
 	background-color: #fef9ed;
 	border-radius: 1rem;
 	box-shadow: 5px 5px 20px rgba(54, 66, 44, 0.1);
-	// text-align: justify;
 	flex-direction: column;
 	gap: 0.5rem;
 	display: flex;
 	font-size: 1rem;
 
-    .btn{
-        &_group {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: auto;
-            button {
-                flex: 1;
-                text-align: center;
-                padding: 0.4rem;
-                background-color: $clr-brown-light;
-                color:  $clr-brown-dark;
-                border-radius: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                &.btn_delete {
-                    flex: 0.5;
-                    // justify-self: unset;
-                    background-color: #dd352e;
-                }
-            }
+	.btn {
+		&_group {
+			display: flex;
+			gap: 0.5rem;
+			margin-top: auto;
+			button {
+				flex: 1;
+				@include brownBtn;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				&.btn_delete {
+					flex: 0.5;
+					background-color: $clr-red;
+					&:hover {
+						background-color: color.adjust($clr-red, $lightness: 5%);
+					}
+				}
+			}
 		}
-        
-        
 	}
 	.rating {
 		display: inline-flex;

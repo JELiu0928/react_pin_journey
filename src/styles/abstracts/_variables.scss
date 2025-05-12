@@ -2,11 +2,9 @@
 
 $clr-primary: #A7C9A5;
 $clr-secondary: #F4F1DE;
-// $clr-secondary: #90bc8c;
 $clr-tertiary: #5A7D68;
 $clr-yellow:#ffdd54;
-// $clr-secondary: #5a8459;
 $clr-brown-light:#d2b48c;
 $clr-brown-dark:#5d4037;
-$clr-step-desc:rgb(226, 40, 3);
+$clr-red:#e22803;
 $test: color.adjust($clr-tertiary, $lightness: -20%);

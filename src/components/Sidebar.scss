@@ -1,4 +1,5 @@
 @use "../styles/abstracts/variables" as *;
+@use "sass:color";
 
 .sidebar {
 	height: 100%;
@@ -15,14 +16,23 @@
 	.btn_clear {
 		background-color: $clr-brown-light;
 		color: $clr-brown-dark;
+        &:hover {
+            background: color.adjust($clr-brown-light, $lightness: 5%);
+        }
 	}
+    .btn_submit,.sidebar_close{
+        padding: 0.4rem;
+		background-color: $clr-tertiary;
+		color: $clr-secondary;
+        &:hover {
+            background: color.adjust($clr-tertiary, $lightness: 5%);
+        }
+    }
+    
 	button {
 		flex: 1;
 		text-align: center;
-		padding: 0.4rem;
-		background-color: $clr-tertiary;
-		color: $clr-secondary;
-	}
+    }
 	&_close {
 		width: 1.5rem;
 		aspect-ratio: 1;

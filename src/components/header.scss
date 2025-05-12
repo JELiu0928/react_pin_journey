@@ -2,28 +2,31 @@
 @use "sass:color";
 header {
 	background-color: $clr-primary;
-    opacity: .8;
 	box-shadow: 0 0.5rem 0.8rem rgba(77, 77, 77, 0.2);
-    backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
 }
 nav {
 	display: flex;
-	// justify-content: space-between;
 	align-items: center;
 	padding: 0.5rem;
-    gap: 1rem;
+	gap: 1rem;
 }
 nav img {
 	width: 100px;
-    margin-right: auto;
+	margin-right: auto;
+	cursor: pointer;
+	transition: 0.5s;
+	&:hover {
+		scale: 1.05;
+	}
 }
-.info_btn{
-    transition: color .3s;
-    font-size: 1.5rem;
-    color: $clr-tertiary;
-    &:hover{
-        color:  color.adjust($clr-tertiary, $lightness: -15%);;
-    }
+.info_btn {
+	transition: color 0.3s;
+	font-size: 1.5rem;
+	color: $clr-tertiary;
+	&:hover {
+		color: color.adjust($clr-tertiary, $lightness: -15%);
+	}
 }
 .search {
 	&_input {
@@ -39,20 +42,21 @@ nav img {
 			background-color: color.adjust($clr-primary, $lightness: 5%);
 			border-radius: 2rem;
 			border: 1px solid color.adjust($clr-primary, $lightness: -10%);
-			transition: background-color 0.3s, border 0.3s, width 0.5s ,opacity .5s;
-            text-align: left;
-            &::placeholder{
-                color: color.adjust($clr-primary, $lightness: -20%);
-                opacity: 0;
-            }
-            &:hover,&:focus{
-                width: calc(100% - 2.5rem);
-                background-color: color.adjust($clr-primary, $lightness: 10%);
+			transition: background-color 0.3s, border 0.3s, width 0.5s, opacity 0.5s;
+			text-align: left;
+			&::placeholder {
+				color: color.adjust($clr-primary, $lightness: -20%);
+				opacity: 0;
+			}
+			&:hover,
+			&:focus {
+				width: calc(100% - 2.5rem);
+				background-color: color.adjust($clr-primary, $lightness: 10%);
 				border: 2px solid $clr-secondary;
-                &::placeholder{
-                    opacity: 1;
-                }
-            }
+				&::placeholder {
+					opacity: 1;
+				}
+			}
 		}
 		&-icon {
 			transition: color 0.3s;
@@ -61,10 +65,10 @@ nav img {
 			top: 50%;
 			transform: translateY(-50%);
 			color: color.adjust($clr-primary, $lightness: -10%);
-            &:hover + input{
+			&:hover + input {
 				background-color: color.adjust($clr-primary, $lightness: 10%);
 				border: 2px solid #fff;
-                width: calc(100% - 2.5rem);
+				width: calc(100% - 2.5rem);
 			}
 		}
 	}

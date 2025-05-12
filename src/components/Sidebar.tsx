@@ -156,7 +156,7 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 					<button type="button" className="btn_clear" onClick={() => handleClear()}>
 						清除
 					</button>
-					<button type="button" onClick={() => handleSubmit(coord)}>
+					<button className="btn_submit"  type="button" onClick={() => handleSubmit(coord)}>
 						{isEdit ? "編輯" : "送出"}
 					</button>
 					{isSidebarOpen && (

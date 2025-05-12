@@ -1,4 +1,4 @@
-import "./model.scss";
+import "./Model.scss";
 import correctIcon from "../assets/correct.png";
 import errorIcon from "../assets/error.png";
 import { createPortal } from "react-dom";
@@ -35,7 +35,7 @@ function Model({ msg, setIsSidebarOpen, isCorrect }: ModelProps) {
 	return createPortal(
 		<AnimatePresence>
 			{isShowModel && (
-				<div className="overlay">
+				<div className="model_overlay">
 					<motion.div className="model" initial={{ opacity: 0, y: -100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -100 }} transition={{ duration: 0.3 }}>
 						<div className="model_icon">
 							<img src={isCorrect ? correctIcon : errorIcon} alt={isCorrect ? '正確圖片' : '錯誤圖片'} />
