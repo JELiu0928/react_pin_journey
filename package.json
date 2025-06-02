@@ -10,7 +10,8 @@
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"predeploy": "vite build",
-		"deploy": "gh-pages -d dist"
+		"deploy": "gh-pages -d dist",
+		"server": "nodemon server/index.js"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -18,12 +19,18 @@
 		"@fortawesome/react-fontawesome": "^0.2.2",
 		"@gsap/react": "^2.1.2",
 		"@react-google-maps/api": "^2.20.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
 		"framer-motion": "^12.6.5",
 		"gsap": "^3.13.0",
+		"mysql2": "^3.14.1",
 		"nanoid": "^5.1.5",
+		"pg": "^8.16.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-router-dom": "^7.6.0"
+		"react-router-dom": "^7.6.0",
+		"react-scan": "^0.3.4"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.21.0",
@@ -35,7 +42,9 @@
 		"eslint-plugin-react-refresh": "^0.4.19",
 		"gh-pages": "^6.3.0",
 		"globals": "^15.15.0",
+		"nodemon": "^3.1.10",
 		"sass": "^1.86.3",
+		"ts-node": "^10.9.2",
 		"typescript": "~5.7.2",
 		"typescript-eslint": "^8.24.1",
 		"vite": "^6.2.0"

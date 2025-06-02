@@ -25,3 +25,11 @@ dist-ssr
 
 .env
 .env.*
+
+# 排除測試設定檔案
+src/setupTests.ts
+jest.config.cjs
+# 排除測試相關資料夾
+__mocks__/
+__tests__/
+server/.env

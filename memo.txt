@@ -1,4 +1,301 @@
-+ 點到不是台灣的地方要顯示model
-
-
-[{"id":"YQ9k4LFq4_bphhocfLaio","coordinate":{"lat":23.6978,"lng":120.9605},"visitDate":"2025-03-31","category":"other","rating":2,"desc":"化石展示豐富又有教育意義，小朋友應該會超愛！館內導覽也很用心。","name":"臺南左鎮化石園區","address":"713001台灣台南市左鎮區6123號"},{"id":"oi6kQx7sDrRSevCD74pie","coordinate":{"lat":23.6978,"lng":120.9605},"visitDate":"2025-04-05","category":"shop","rating":2,"desc":"老街保留得很好，小吃不少但有些偏觀光價，適合逛個一圈吃點古早味。","name":"旗山老街","address":"842台灣高雄市旗山區中山路1號"},{"id":"gfur0PBK4vj2qpnX0Do2-","coordinate":{"lat":22.94724936147562,"lng":120.52748680114746},"visitDate":"2024-05-05","category":"restaurant","rating":3,"desc":"環境超放鬆，點了一杯手沖咖啡和甜點，待一下午剛剛好～","name":"杉林區 有閒來聊 客家咖啡 庭園","address":"846台灣高雄市杉林區桐竹路239號"},{"id":"doI1XDECOqZnK6sjVimvo","coordinate":{"lat":23.46789154611648,"lng":120.24518966674805},"visitDate":"2025-01-29","category":"other","rating":3,"desc":"香火鼎盛，建築很有歷史感，廟旁的豆花也很好吃。","name":"朴子配天宮","address":"613台灣嘉義縣朴子市開元路118號"},{"id":"6n8cYrWGtqo7kpO2armAl","coordinate":{"lat":23.46426986744619,"lng":120.24527549743652},"visitDate":"2025-03-17","category":"restaurant","rating":1,"desc":"排了快半小時，但湯頭真的不錯！就是位置不多有點擠。","name":"初八拉麵 朴子店","address":"613台灣嘉義縣朴子市市西路4號"},{"id":"dfgt27qFS5eSqupBkM3oD","coordinate":{"lat":23.439351031000086,"lng":120.6012899061788},"visitDate":"2025-04-10","category":"attraction","rating":3,"desc":"有濃濃日式風格的小派出所，意外成為打卡熱點。","name":"觸口派出所","address":"602台灣嘉義縣番路鄉"},{"id":"7muyJQPYqIVJaGcKWlyZW","coordinate":{"lat":23.46178974755377,"lng":120.22810935974121},"visitDate":"2025-04-01","category":"other","rating":3,"desc":"看到整排生產線和自動化設備，對食品研發的記憶整個被喚醒。","name":"宥德食品廠","address":"613台灣嘉義縣朴子市152 之 20 號"},{"id":"R2RF8RUInef3P8anNTCM3","coordinate":{"lat":23.40890881239855,"lng":120.25566101074219},"visitDate":"2025-04-11","category":"attraction","rating":2,"desc":"整體還在規劃中，走一圈看看水池跟植物還算舒服。","name":"牛挑灣埤生態園區","address":"613台灣嘉義縣朴子市"},{"id":"M8_0dT-ZZ9bxKmGz0EZEX","coordinate":{"lat":23.379289404720467,"lng":120.3358268737793},"visitDate":"2025-04-09","category":"shop","rating":3,"desc":"老街超有味道，嫁妝文化介紹也滿有趣的，值得一來。","name":"無米樂菁寮嫁妝老街","address":"731台灣台南市后壁区老街68號老街荷蘭井129號 菁寮里菁寮老街荷蘭井138號"},{"id":"tlvVEpRPCiCMjxpGp6nzm","coordinate":{"lat":23.47316642202988,"lng":120.29256820678711},"visitDate":"2025-04-11","category":"attraction","rating":3,"desc":"展覽豐富，空間寬敞，有機會想再來深入逛一整天。","name":"國立故宮博物院南部院區","address":"612台灣嘉義縣太保市故宮大道888號"},{"id":"rN8S93iU3DWywoSPwLD-n","coordinate":{"lat":23.482613433879415,"lng":120.35179138183594},"visitDate":"2025-04-02","category":"restaurant","rating":2,"desc":"地點很特別，餐點還可以，來主要是看遺址景觀。","name":"魚寮遺址","address":"612台灣嘉義縣太保市6128號"},{"id":"D5qQ0QYVubrCMv7aRMLsU","coordinate":{"lat":23.335261633907617,"lng":120.24836540222168},"visitDate":"2025-04-09","category":"shop","rating":1,"desc":"意外發現的便利商店，外觀很特別，旁邊還有賽鴿場！","name":"萊爾富便利商店 義竹賽鴿笭店","address":"624台灣嘉義縣義竹鄉中央公路118號"},{"id":"icVkCNfQ7VQROrL8c0kzU","coordinate":{"lat":23.457146778808447,"lng":120.26501655578613},"visitDate":"2025-04-11","category":"other","rating":2,"desc":"是我童年的地方，每次經過這附近都有熟悉的味道。","name":"喵癮貓坊/源憶犬舍","address":"613台灣嘉義縣朴子市47-5號"},{"id":"9lHh64vq4awKGU9dsJ0Bj","coordinate":{"lat":23.53471728038719,"lng":120.21772384643555},"visitDate":"2025-01-29","category":"attraction","rating":3,"desc":"是憨吉!!!","name":"憨吉秘塘","address":"652台灣雲林縣水林鄉45-18號"},{"id":"_FT9GGLlMFqgWvIM-SaDY","coordinate":{"lat":23.6978,"lng":120.9605},"visitDate":"2025-04-10","category":"attraction","rating":2,"desc":"第二次來這裡，還是覺得這間派出所有種靜謐的美。","name":"觸口派出所","address":"602台灣嘉義縣番路鄉"}]
+[
+    {
+        "id": "gfur0PBK4vj2qpnX0Do2-",
+        "coordinate": {
+            "lat": 22.94724936147562,
+            "lng": 120.52748680114746
+        },
+        "visitDate": "2024-05-05",
+        "category": "restaurant",
+        "rating": 3,
+        "desc": "環境超放鬆，點了一杯手沖咖啡和甜點，待一下午剛剛好～",
+        "name": "杉林區 有閒來聊 客家咖啡 庭園",
+        "address": "846台灣高雄市杉林區桐竹路239號"
+    },
+    {
+        "id": "doI1XDECOqZnK6sjVimvo",
+        "coordinate": {
+            "lat": 23.46789154611648,
+            "lng": 120.24518966674805
+        },
+        "visitDate": "2025-01-29",
+        "category": "other",
+        "rating": 3,
+        "desc": "香火鼎盛，建築很有歷史感，廟旁的豆花也很好吃。",
+        "name": "朴子配天宮",
+        "address": "613台灣嘉義縣朴子市開元路118號"
+    },
+    {
+        "id": "6n8cYrWGtqo7kpO2armAl",
+        "coordinate": {
+            "lat": 23.46426986744619,
+            "lng": 120.24527549743652
+        },
+        "visitDate": "2025-03-17",
+        "category": "restaurant",
+        "rating": 1,
+        "desc": "排了快半小時，但湯頭真的不錯！就是位置不多有點擠。",
+        "name": "初八拉麵 朴子店",
+        "address": "613台灣嘉義縣朴子市市西路4號"
+    },
+    {
+        "id": "QrOKV1Vth2mH2LcpmhMJR",
+        "coordinate": {
+            "lat": 23.439351031000086,
+            "lng": 120.6012899061788
+        },
+        "visitDate": "2025-04-10",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "有濃濃日式風格的小派出所，意外成為打卡熱點。",
+        "name": "觸口派出所",
+        "address": "602台灣嘉義縣番路鄉"
+    },
+    {
+        "id": "7muyJQPYqIVJaGcKWlyZW",
+        "coordinate": {
+            "lat": 23.46178974755377,
+            "lng": 120.22810935974121
+        },
+        "visitDate": "2025-04-01",
+        "category": "other",
+        "rating": 3,
+        "desc": "看到整排生產線和自動化設備，對食品研發的記憶整個被喚醒。",
+        "name": "宥德食品廠",
+        "address": "613台灣嘉義縣朴子市152 之 20 號"
+    },
+    {
+        "id": "R2RF8RUInef3P8anNTCM3",
+        "coordinate": {
+            "lat": 23.40890881239855,
+            "lng": 120.25566101074219
+        },
+        "visitDate": "2025-04-11",
+        "category": "attraction",
+        "rating": 2,
+        "desc": "整體還在規劃中，走一圈看看水池跟植物還算舒服。",
+        "name": "牛挑灣埤生態園區",
+        "address": "613台灣嘉義縣朴子市"
+    },
+    {
+        "id": "6ehTdblw18F195HWUU_GW",
+        "coordinate": {
+            "lat": 23.379289404720467,
+            "lng": 120.3358268737793
+        },
+        "visitDate": "2025-04-08",
+        "category": "shopping",
+        "rating": 3,
+        "desc": "老街超有味道，嫁妝文化介紹也滿有趣的，值得一來。",
+        "name": "無米樂菁寮嫁妝老街",
+        "address": "731台灣台南市后壁区老街68號老街荷蘭井129號 菁寮里菁寮老街荷蘭井138號"
+    },
+    {
+        "id": "YYrkTpRKIXyKpLOpt9yaP",
+        "coordinate": {
+            "lat": 23.47316642202988,
+            "lng": 120.29256820678711
+        },
+        "visitDate": "2025-04-11",
+        "category": "attraction",
+        "rating": 2,
+        "desc": "展覽豐富，空間寬敞，有機會想再來深入逛一整天。",
+        "name": "國立故宮博物院南部院區",
+        "address": "612台灣嘉義縣太保市故宮大道888號"
+    },
+    {
+        "id": "C7MLQfvFswepy168KlxIE",
+        "coordinate": {
+            "lat": 23.482613433879415,
+            "lng": 120.35179138183594
+        },
+        "visitDate": "2025-04-02",
+        "category": "restaurant",
+        "rating": 1,
+        "desc": "地點很特別，餐點還可以，來主要是看遺址景觀。",
+        "name": "魚寮遺址",
+        "address": "612台灣嘉義縣太保市6128號"
+    },
+    {
+        "id": "YkvP0jvaq-CnlhNqyYPYk",
+        "coordinate": {
+            "lat": 23.335261633907617,
+            "lng": 120.24836540222168
+        },
+        "visitDate": "2025-04-09",
+        "category": "shop",
+        "rating": 2,
+        "desc": "意外發現的便利商店，外觀很特別，旁邊還有賽鴿場！",
+        "name": "萊爾富便利商店 義竹賽鴿笭店",
+        "address": "624台灣嘉義縣義竹鄉中央公路118號"
+    },
+    {
+        "id": "9lHh64vq4awKGU9dsJ0Bj",
+        "coordinate": {
+            "lat": 23.53471728038719,
+            "lng": 120.21772384643555
+        },
+        "visitDate": "2025-01-29",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "是憨吉!!!",
+        "name": "憨吉秘塘",
+        "address": "652台灣雲林縣水林鄉45-18號"
+    },
+    {
+        "id": "KpGxdPTp_oSJrXtckg9c8",
+        "coordinate": {
+            "lat": 23.788172232292922,
+            "lng": 120.42972564697266
+        },
+        "visitDate": "2025-04-01",
+        "category": "other",
+        "rating": 2,
+        "desc": "參觀了醬油的釀造過程，雖然味道有點重，但滿有趣的體驗。",
+        "name": "瑞春醬油觀光工廠",
+        "address": "648台灣雲林縣西螺鎮裕民路68-31號"
+    },
+    {
+        "id": "QqoaLbuy-qrA8bJ4d2PgM",
+        "coordinate": {
+            "lat": 24.258976748357355,
+            "lng": 120.51847457885742
+        },
+        "visitDate": "2025-04-02",
+        "category": "shopping",
+        "rating": 1,
+        "desc": "平日人不多，購物環境很舒服，吃的選擇也不少，但東西貴。",
+        "name": "MITSUI OUTLET PARK 台中港",
+        "address": "435台灣台中市梧棲區臺灣大道十段168號"
+    },
+    {
+        "id": "jjid63eiqN3v3eK6jPQ0N",
+        "coordinate": {
+            "lat": 24.230137749992977,
+            "lng": 120.60104370117188
+        },
+        "visitDate": "2025-04-03",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "夜景不錯看，月老廟附近有幾個平台適合拍照。",
+        "name": "台中月老廟夜景",
+        "address": "433台灣台中市沙鹿區"
+    },
+    {
+        "id": "jz3zgC8QJpYgLKMMctS-N",
+        "coordinate": {
+            "lat": 24.498083569579247,
+            "lng": 120.76858520507812
+        },
+        "visitDate": "2024-12-03",
+        "category": "attraction",
+        "rating": 2,
+        "desc": "適合親子或情侶，裡面裝置藝術很多，小朋友玩得超開心。",
+        "name": "格林奇幻森林 Green Fantasy Forest",
+        "address": "368台灣苗栗縣西湖鄉笕窩1鄰7號"
+    },
+    {
+        "id": "C42bhNU_aiChoOQ7Y2_Pr",
+        "coordinate": {
+            "lat": 24.62392376769589,
+            "lng": 120.95947265625
+        },
+        "visitDate": "2025-04-10",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "落羽松真的超漂亮，整個區域很安靜，適合散步。",
+        "name": "苗栗落羽松秘境",
+        "address": "351台灣苗栗縣三灣鄉尖豐路600號367"
+    },
+    {
+        "id": "EzKTrsnyBfYw1XL7SkMlq",
+        "coordinate": {
+            "lat": 25.13658225975545,
+            "lng": 121.50707244873047
+        },
+        "visitDate": "2024-04-04",
+        "category": "activity",
+        "rating": 3,
+        "desc": "裡面介紹北投溫泉的歷史與文化，小巧但很有質感。",
+        "name": "北投溫泉博物館",
+        "address": "112台灣台北市北投區中山路2號"
+    },
+    {
+        "id": "ka-5SpitxLIk10boK7LVC",
+        "coordinate": {
+            "lat": 22.88756221517449,
+            "lng": 121.16718292236328
+        },
+        "visitDate": "2025-04-10",
+        "category": "activity",
+        "rating": 3,
+        "desc": "以原住民文化為主題，導覽員很親切，學到很多自然知識。",
+        "name": "鸞山森林博物館（森林文化博物館）",
+        "address": "953台灣台東縣延平鄉鸞山森林博物館"
+    },
+    {
+        "id": "z3-2UXYRxWRqWfSq9sY0j",
+        "coordinate": {
+            "lat": 21.949414410851833,
+            "lng": 120.77957153320312
+        },
+        "visitDate": "2023-02-13",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "園區很大但有點舊，部分步道略顯荒廢，但還是有原始森林的感覺。",
+        "name": "墾丁國家森林遊樂區",
+        "address": "946台灣屏東縣恆春鎮公園路201號"
+    },
+    {
+        "id": "gRU7naX6mzzu5U_8FQcEV",
+        "coordinate": {
+            "lat": 22.817643497045136,
+            "lng": 120.267333984375
+        },
+        "visitDate": "2025-01-20",
+        "category": "activity",
+        "rating": 1,
+        "desc": "內容略顯陽春，但了解滷味製程也算有趣。",
+        "name": "台灣滷味博物館",
+        "address": "820台灣高雄市岡山區本工西路29號"
+    },
+    {
+        "id": "xOYXWQtQp14G2SN11Xaf2",
+        "coordinate": {
+            "lat": 23.155276017794474,
+            "lng": 120.50505065708421
+        },
+        "visitDate": "2024-02-06",
+        "category": "attraction",
+        "rating": 1,
+        "desc": "農場設施老舊，適合親子踏青但需要更多維護。",
+        "name": "走馬瀨農場",
+        "address": "742台灣台南市大內區其子瓦60號"
+    },
+    {
+        "id": "A7t7Ff1mX_nKoJ9Rm7ME1",
+        "coordinate": {
+            "lat": 23.8480049861722,
+            "lng": 120.93097686767578
+        },
+        "visitDate": "2025-04-17",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "日月潭必去!!!",
+        "name": "伊達邵商店街",
+        "address": "555台灣南投縣魚池鄉義勇街"
+    },
+    {
+        "id": "AKscDdsrqje_fuoa46Cu4",
+        "coordinate": {
+            "lat": 23.865431384979367,
+            "lng": 120.9481430053711
+        },
+        "visitDate": "2025-04-03",
+        "category": "attraction",
+        "rating": 3,
+        "desc": "九族文化村必坐纜車",
+        "name": "九族文化村",
+        "address": "555台灣南投縣魚池鄉金天巷45號"
+    }
+]

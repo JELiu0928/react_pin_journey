@@ -5,9 +5,10 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import { MapProvider } from "./contexts/MapContext";
 import { LoadScript } from "@react-google-maps/api";
-
+// import { useScan } from 'react-scan';
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY; // 環境變數中的 Google Maps API 金鑰
 function App() {
+    // useScan({ enabled: process.env.NODE_ENV === 'development' });
 	return (
 		<LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
 			<MapProvider>

@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import "./Info.scss";
 import { useMapContext } from "../contexts/MapContext";
 import { ICoordData } from "../types/type";
+// import { useReducedMotion } from "framer-motion";
 
 interface InfoProps {
 	coord: ICoordData;
@@ -9,25 +10,26 @@ interface InfoProps {
 }
 
 function Info({ coord, setIsShowInfo }: InfoProps) {
-	const { setEditCoord, cateArr, setIsShowModel, setMsg, setIsDelMode, setTargetToDelete } = useMapContext();
-
+	const { setEditCoord, logCategory, setIsShowModel, setMsg, setIsDelMode, setTargetToDelete, setIsEdit } = useMapContext();
 
 	const handleEdit = (e: React.MouseEvent, coord: ICoordData) => {
 		e.stopPropagation();
+		setIsEdit(true);
 		setEditCoord(coord);
 	};
 	const handleDel = (e: React.MouseEvent, coord: ICoordData) => {
 		e.stopPropagation();
+
+		setMsg("確定要刪除嗎?");
 		setIsShowModel(true);
 		setTargetToDelete(coord);
-		setMsg("確定要刪除嗎?");
 		setIsDelMode(true);
 	};
 	const handleInfoShow = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		setIsShowInfo(false);
 	};
-	const cate = cateArr.find((item) => item.key === coord.category);
+	const cate = logCategory.find((item) => item.cate_name === coord.category);
 	return (
 		<div className="info">
 			<div>
@@ -44,7 +46,7 @@ function Info({ coord, setIsShowInfo }: InfoProps) {
 			</div>
 			<div>
 				<span>類別：</span>
-				<span className="category">{cate?.value}</span>
+				<span className="category">{cate?.cate_title}</span>
 			</div>
 			<div>
 				<span>評分：</span>
@@ -69,7 +71,7 @@ function Info({ coord, setIsShowInfo }: InfoProps) {
 			</div>
 			<div>
 				<span>回憶碎片：</span>
-				<span className="text_zone">{coord.desc}</span>
+				<span className="text_zone">{coord.description}</span>
 			</div>
 			<div className="btn_group">
 				<button onClick={(e) => handleEdit(e, coord)}>編輯</button>

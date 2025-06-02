@@ -1,9 +1,9 @@
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import "./Sidebar.scss";
 import { Fragment, useEffect, useState } from "react";
 import { useMapContext } from "../contexts/MapContext";
 import Model from "./Model";
-import { ICoordData, LocalInfo } from "../types/type";
+import { ICoordData, LocalInfo, ApiResponse } from "../types/type";
 
 interface SidebarProps {
 	localInfo: LocalInfo;
@@ -12,43 +12,45 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) => {
-	const { cateArr, coordinate, setCoordinate, coordArr, setCoordArr, msg, setMsg, isSidebarOpen, setIsSidebarOpen, setIsShowModel, editCoord, setEditCoord, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc } = useMapContext();
+	const { logCategory, coordinate, setCoordinate, setCoordArr, msg, setMsg, isSidebarOpen, setIsSidebarOpen, setIsShowModel, editCoord, setEditCoord, visitDate, setVisitDate, category, setCategory, rating, setRating, description, setDescription, isEdit, setIsEdit } = useMapContext();
 	const [isCorrect, setIsCorrect] = useState<boolean>(true);
-	const [isEdit, setIsEdit] = useState<boolean>(false);
+	const [logId, setLogId] = useState<number | null>(null);
+	// const [isEdit, setIsEdit] = useState<boolean>(false);
+	const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 	const coord = {
-		id: nanoid(),
+		// id: nanoid(),
+		...(isEdit && logId ? { id: logId } : {}),
 		coordinate,
 		visitDate,
 		category,
 		rating,
-		desc,
+		description,
 		name,
 		address,
 	};
+
 	useEffect(() => {
 		if (editCoord) {
 			setIsSidebarOpen(true);
+			setLogId(editCoord.id ?? null);
 			setVisitDate(editCoord.visitDate);
 			setCategory(editCoord.category);
 			setRating(editCoord.rating);
-			setDesc(editCoord.desc);
+			setDescription(editCoord.description);
 			setCoordinate(editCoord.coordinate);
 			setLocalInfo({ name: editCoord.name, address: editCoord.address });
-			// console.log('Sidebar editCoord',editCoord)
 			setIsEdit(true);
 		}
 	}, [editCoord]);
-	// console.log("rating====", rating);
-	useEffect(() => {
-		localStorage.setItem("coord", JSON.stringify(coordArr));
-	}, [coordArr]);
 
 	const validateForm = (): { valid: boolean; message?: string } => {
 		const missingFields = [];
+		// console.log("validateForm", visitDate, category, rating, description, name, address);
 		if (!visitDate) missingFields.push("到訪日期");
 		if (!category) missingFields.push("類別");
 		if (!rating) missingFields.push("評分");
-		if (!desc) missingFields.push("回憶碎片");
+		if (!description) missingFields.push("回憶碎片");
 		if (!name) missingFields.push("名稱");
 		if (!address) missingFields.push("地址");
 
@@ -60,7 +62,37 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 		}
 		return { valid: true };
 	};
-	const handleSubmit = (coord: ICoordData) => {
+
+	const submitForm = async (method: "POST" | "PUT", url: string, body: ICoordData): Promise<ApiResponse | null> => {
+		try {
+			const response = await fetch(url, {
+				method,
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body),
+			});
+            console.log('response---->',response)
+			const data = await response.json();
+            console.log('data---->',data)
+			if (!response.ok) {
+				if (response.status === 404 || !data.success) {
+					// 如果找不到紀錄，顯示錯誤訊息
+					setIsCorrect(false);
+					setMsg(data.error);
+					setIsShowModel(true);
+					return null;
+				}
+				throw new Error("網路錯誤，請稍後再試。");
+			}
+
+			return data;
+		} catch (err) {
+			console.error(`${method === "POST" ? "新增" : "編輯"}失敗`, err);
+			return null;
+		}
+	};
+	const handleSubmit = async (coord: ICoordData) => {
 		const { valid, message } = validateForm();
 		if (!valid) {
 			setIsCorrect(false);
@@ -68,20 +100,24 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 			setIsShowModel(true);
 			return;
 		}
+		let data = null;
 		if (isEdit && editCoord) {
-			setCoordArr((oldVal) => {
-				return oldVal.map((item) => (item.id === editCoord.id ? coord : item));
-			});
-			setMsg("編輯成功~");
+			data = await submitForm("PUT", `${baseUrl}/api/travel-logs/${coord.id}`, coord);
 		} else {
-			setCoordArr((oldval) => [...oldval, coord]);
-			setMsg("新增成功~");
+			data = await submitForm("POST", `${baseUrl}/api/travel-logs`, coord);
 		}
-		setIsCorrect(true);
-		setIsShowModel(true);
 
-		handleClear();
+		if (data) {
+			setCoordArr(data.logs ?? []);
+			setMsg(data.msg ?? "");
+			setIsCorrect(true);
+			setIsShowModel(true);
+
+			handleClear();
+			handleClose();
+		}
 	};
+	
 	const handleClose = () => {
 		setIsSidebarOpen(false);
 		setEditCoord(null);
@@ -91,10 +127,13 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 		setVisitDate("");
 		setCategory("");
 		setRating(0);
-		setDesc("");
+		setDescription("");
 		setLocalInfo({ name: "", address: "" });
 	};
 
+	useEffect(() => {
+		// console.log("coordArr", coordArr);
+	});
 	return (
 		<>
 			<form action="" className="sidebar">
@@ -108,18 +147,18 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 				</div>
 				<div className="form-row">
 					<label htmlFor="visit_date">到訪日期</label>
-					<input type="date" required name="visitDate" id="visit_date" value={visitDate} onChange={(e) => setVisitDate(e.target.value)} />
+					<input type="date" required name="visit_date" id="visit_date" value={visitDate} onChange={(e) => setVisitDate(e.target.value)} />
 				</div>
 
 				<div className="form-row">
 					<label htmlFor="category">類別</label>
 
 					<select id="category" name="category" required value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">選擇類別</option>
-						{cateArr.map((cate) => {
+						<option value="">選擇類別</option>
+						{logCategory.map((cate) => {
 							return (
-								<Fragment key={cate.key}>
-									<option value={cate.key}>{cate.value}</option>
+								<Fragment key={cate.id}>
+									<option value={cate.cate_name}>{cate.cate_title}</option>
 								</Fragment>
 							);
 						})}
@@ -150,13 +189,13 @@ const Sidebar = ({ localInfo: { name, address }, setLocalInfo }: SidebarProps) =
 
 				<div className="text_area">
 					<label htmlFor="text_zone">回憶碎片</label>
-					<textarea name="desc" required value={desc} onChange={(e) => setDesc(e.target.value)} id="text_zone" rows={8}></textarea>
+					<textarea name="description" required value={description} onChange={(e) => setDescription(e.target.value)} id="text_zone" rows={8} placeholder="字數不可以超過150字。"></textarea>
 				</div>
 				<div className="btn_group">
 					<button type="button" className="btn_clear" onClick={() => handleClear()}>
 						清除
 					</button>
-					<button className="btn_submit"  type="button" onClick={() => handleSubmit(coord)}>
+					<button className="btn_submit" type="button" onClick={() => handleSubmit(coord)}>
 						{isEdit ? "編輯" : "送出"}
 					</button>
 					{isSidebarOpen && (

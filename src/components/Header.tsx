@@ -33,7 +33,7 @@ const Header = () => {
 				setIsShowMarker(true);
 				if (map) {
 					map.setCenter({ lat, lng });
-					map.setZoom(14); // 或你需要的縮放級別
+					map.setZoom(18); // 或你需要的縮放級別
 				}
 			}
 		});

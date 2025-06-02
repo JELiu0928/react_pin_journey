@@ -7,7 +7,7 @@ import Info from "./Info";
 import pin01 from "../assets/pin01.png";
 import pin02 from "../assets/pin02.png";
 import pin03 from "../assets/pin03.png";
-import { ICoordData, LocalInfo } from "../types/type";
+import { ApiResponse, ICoordData, LocalInfo } from "../types/type";
 import "./Map.scss";
 import { MapOverlayPortal } from "./MapOverlayPortal";
 import { motion, AnimatePresence } from "framer-motion"; // 引入 framer-motion
@@ -23,12 +23,12 @@ type PlaceItem = {
 	vicinity: string;
 };
 const Map = () => {
-	const { map, setMap, coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setVisitDate, setCategory, setRating, setDesc } = useMapContext();
+	const { map, setMap, coordinate, setCoordinate, zoom, isShowMarker, setIsShowMarker, isSidebarOpen, setIsSidebarOpen, coordArr, setCoordArr, setVisitDate, setCategory, setRating, setDescription, setIsEdit } = useMapContext();
 	const [localInfo, setLocalInfo] = useState<LocalInfo>({ name: "", address: "" });
 	const [isTaiwan, setIsTaiwan] = useState<boolean>(true);
 	// const [isShowMarker, setShowMarker] = useState<boolean>(false);
 	const [isShowInfo, setIsShowInfo] = useState<boolean>(false);
-	const [selectedCoordId, setSelectedCoordId] = useState<string | null>(null);
+	const [selectedCoordId, setSelectedCoordId] = useState<number | null>(null);
 	// 顯示點選附近地點列表
 	const [nearbyPlaces, setNearbyPlaces] = useState<PlaceItem[]>([]);
 	const [showPlacesList, setShowPlacesList] = useState<boolean>(false);
@@ -41,10 +41,13 @@ const Map = () => {
 		west: 118.0, // 西部
 	};
 
+	// -------logo動畫 start -------
+	// 僅在首頁點擊開始時觸發
 	const mapLogoRef = useRef(null);
 	const location = useLocation();
 	const navi = useNavigate();
 	const fromHome = location.state?.fromHome;
+
 	useGSAP(
 		() => {
 			if (!fromHome) {
@@ -91,6 +94,32 @@ const Map = () => {
 			navi(location.pathname, { replace: true, state: {} });
 		}
 	}, [location, navi]);
+	// ------- logo動畫 end -------
+
+	// fetch 地圖資料
+	useEffect(() => {
+		const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
+		const fetchAllPin = async () => {
+			try {
+				const res = await fetch(`${baseUrl}/api/travel-logs`);
+				const data: ApiResponse = await res.json();
+				if (!res.ok) {
+					if (res.status === 404 || !data.success) {
+						throw new Error("找不到紀錄。");
+					}
+					throw new Error("網路錯誤，請稍後再試。");
+				}
+				// console.log("map-data", data);
+				setCoordArr(data.logs ?? []);
+			} catch (error) {
+				console.error("獲取紀錄失敗：", error);
+				setCoordArr([]);
+			}
+		};
+		fetchAllPin();
+	}, []);
+
 	//地圖點擊
 	const onMapClick = useCallback(
 		(e: google.maps.MapMouseEvent) => {
@@ -100,12 +129,15 @@ const Map = () => {
 				const clickCoord = { lat, lng };
 				setCoordinate(clickCoord); // 更新地圖中心點的座標
 				setIsShowInfo(false);
+				// setIsEdit(false);
 				// 使用 Geocoder 查詢地址或名稱
 				const geocoder = new window.google.maps.Geocoder();
 				geocoder.geocode({ location: clickCoord }, (results, status) => {
 					if (status === "OK" && results && results.length > 0) {
 						// console.log(results[0].formatted_address);
-						if (!results[0].formatted_address.includes("台灣") && !results[0].formatted_address.includes("臺灣")) {
+						const formattedAddress = results[0].formatted_address ?? "";
+						const compoundCode = results[0].plus_code?.compound_code ?? "";
+						if (!formattedAddress.includes("台灣") && !formattedAddress.includes("臺灣") && !compoundCode.includes("台灣") && !compoundCode.includes("臺灣")) {
 							setIsTaiwan(false);
 						} else {
 							setIsTaiwan(true);
@@ -140,7 +172,7 @@ const Map = () => {
 										// 默認選擇第一個地點
 										if (filteredPlaces.length > 0) {
 											setIsShowMarker(true);
-
+											// setIsEdit(false)
 											setLocalInfo({
 												name: filteredPlaces[0].name,
 												address: filteredPlaces[0].vicinity,
@@ -175,6 +207,7 @@ const Map = () => {
 	// 選擇地點
 	const nearPlaceSelect = (place: PlaceItem) => {
 		// console.log('1...',place)
+		setIsEdit(false);
 
 		// 選擇後獲取更詳細的地址資訊
 		const placesService = new window.google.maps.places.PlacesService(document.createElement("div"));
@@ -186,6 +219,14 @@ const Map = () => {
 			(placeDetails, status) => {
 				if (status === window.google.maps.places.PlacesServiceStatus.OK && placeDetails) {
 					// console.log("2...", placeDetails);
+					// console.log("2...", placeDetails.geometry.location.lat());
+					// 讓markers跟著選擇的地點(不會歪掉)
+					if (placeDetails.geometry?.location) {
+						setCoordinate({
+							lat: placeDetails.geometry.location.lat(),
+							lng: placeDetails.geometry.location.lng(),
+						});
+					}
 					// user選擇後 set名稱和地址
 					setLocalInfo({
 						name: placeDetails.name || place.name,
@@ -197,13 +238,14 @@ const Map = () => {
 		setVisitDate("");
 		setCategory("");
 		setRating(0);
-		setDesc("");
+		setDescription("");
 		// 隱藏選擇列表
 		setShowPlacesList(false);
 		setIsSidebarOpen(true);
 	};
 
-	const handleShowInfo = (id: string) => {
+	const handleShowInfo = (id: number) => {
+		// console.log("handleShowInfo id", id);
 		setSelectedCoordId(id);
 		setIsShowInfo(true);
 		setShowPlacesList(false);
@@ -220,6 +262,7 @@ const Map = () => {
 				return pin03;
 		}
 	};
+
 	return (
 		<>
 			<div className="map_content-container">
@@ -241,7 +284,7 @@ const Map = () => {
 							options={{
 								restriction: {
 									latLngBounds: taiwanBounds,
-									strictBounds: false, // 不強制限制到台灣範圍
+									strictBounds: false,
 								},
 							}}
 							center={coordinate}
@@ -261,7 +304,7 @@ const Map = () => {
 												scaledSize: new google.maps.Size(35, 35),
 											}}
 											position={{ lat: coord.coordinate.lat, lng: coord.coordinate.lng }}
-											onClick={() => handleShowInfo(coord.id)}
+											onClick={() => handleShowInfo(coord.id!)} //非空斷言
 										/>
 
 										{isShowInfo && selectedCoordId == coord.id && map && (

@@ -1,11 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ICoordData, Coordinate, Cate } from "../types/type";
 
 // type Coordinate = { lat: number; lng: number };
 interface MapContextProps {
-	cateArr: Cate[];
-    map:google.maps.Map | null
-    setMap:React.Dispatch<React.SetStateAction<google.maps.Map | null>>
+	logCategory: Cate[];
+	setLogCategory: React.Dispatch<React.SetStateAction<Cate[]>>;
+    
+	map: google.maps.Map | null;
+	setMap: React.Dispatch<React.SetStateAction<google.maps.Map | null>>;
 
 	coordinate: Coordinate;
 	setCoordinate: (coord: Coordinate) => void;
@@ -28,11 +30,13 @@ interface MapContextProps {
 	setCategory: (cate: string) => void;
 	rating: number;
 	setRating: (rating: number) => void;
-	desc: string;
-	setDesc: (desc: string) => void;
+	description: string;
+	setDescription: (desc: string) => void;
 	msg: string;
 	setMsg: (desc: string) => void;
 
+	isEdit: boolean;
+	setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 	isDelMode: boolean;
 	setIsDelMode: React.Dispatch<React.SetStateAction<boolean>>;
 	isShowStep: boolean;
@@ -45,26 +49,26 @@ interface MapContextProps {
 const MapContext = createContext<MapContextProps | undefined>(undefined);
 
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
-	const cateArr: Cate[] = [
-        { key: "restaurant", value: "餐廳" },
-        { key: "cafe", value: "咖啡 / 飲料" }, 
-        { key: "attraction", value: "景點" },
-        { key: "shopping", value: "逛街購物" },
-        { key: "hotel", value: "住宿" },
-        { key: "park", value: "公園 / 自然" },
-        { key: "transport", value: "交通" },
-        { key: "activity", value: "活動 / 展覽" },
-        { key: "other", value: "其他" },
-	];
+	// const cateArr: Cate[] = [
+	// 	{ key: "restaurant", value: "餐廳" },
+	// 	{ key: "cafe", value: "咖啡 / 飲料" },
+	// 	{ key: "attraction", value: "景點" },
+	// 	{ key: "shopping", value: "逛街購物" },
+	// 	{ key: "hotel", value: "住宿" },
+	// 	{ key: "park", value: "公園 / 自然" },
+	// 	{ key: "transport", value: "交通" },
+	// 	{ key: "activity", value: "活動 / 展覽" },
+	// 	{ key: "other", value: "其他" },
+	// ];
 	const [map, setMap] = useState<google.maps.Map | null>(null);
-
+	const [logCategory, setLogCategory] = useState<Cate[]>([]);
 	const [visitDate, setVisitDate] = useState<string>(new Date().toISOString().slice(0, 10));
 	const [category, setCategory] = useState<string>("restaurant");
 	const [rating, setRating] = useState<number>(0);
-	const [desc, setDesc] = useState<string>("");
+	const [description, setDescription] = useState<string>("");
 	const [coordinate, setCoordinate] = useState<Coordinate>({ lat: 23.6978, lng: 120.9605 });
 	const [zoom, setZoom] = useState<number>(8);
-    const [isShowMarker, setIsShowMarker] = useState<boolean>(false);
+	const [isShowMarker, setIsShowMarker] = useState<boolean>(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 	const [isShowModel, setIsShowModel] = useState<boolean>(false);
 	const [isDelMode, setIsDelMode] = useState<boolean>(false);
@@ -74,9 +78,45 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 		const savedCoord = localStorage.getItem("coord");
 		return savedCoord ? JSON.parse(savedCoord) : [];
 	});
+	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [editCoord, setEditCoord] = useState<ICoordData | null>(null);
 	const [isShowStep, setIsShowStep] = useState<boolean>(false);
-	return <MapContext.Provider value={{ map, setMap,coordinate, setCoordinate, zoom, setZoom,isShowMarker, setIsShowMarker, msg, setMsg, isSidebarOpen, setIsSidebarOpen, isShowModel, setIsShowModel, coordArr, setCoordArr, editCoord, setEditCoord, cateArr, visitDate, setVisitDate, category, setCategory, rating, setRating, desc, setDesc, isDelMode, setIsDelMode, targetToDelete, setTargetToDelete,isShowStep, setIsShowStep }}>{children}</MapContext.Provider>;
+
+	useEffect(() => {
+		localStorage.setItem("coord", JSON.stringify(coordArr));
+	}, [coordArr]);
+    
+	useEffect(() => {
+		// let logCategory: Cate[] = [];
+		let parsed: Cate[] = [];
+		try {
+			const raw = localStorage.getItem("log_category");
+			parsed = raw ? JSON.parse(raw) : [];
+			if (parsed.length > 0) {
+				setLogCategory(parsed); 
+				return;
+			}
+		} catch {
+			console.warn("無法解析localStorage");
+		}
+
+        // 如果 localStorage 中沒有類別資料，則從 API 取得
+		fetch(`${import.meta.env.VITE_API_BASE_URL}/api/getCategory`)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("網路錯誤");
+				}
+				return response.json();
+			})
+			.then((cate) => {
+				localStorage.setItem("log_category", JSON.stringify(cate) || "[]");
+				setLogCategory(cate);
+			})
+			.catch((err) => {
+				console.error("取得類別失敗", err);
+			});
+	}, []);
+	return <MapContext.Provider value={{ map, setMap, coordinate, setCoordinate, zoom, setZoom, isShowMarker, setIsShowMarker, msg, setMsg, isSidebarOpen, setIsSidebarOpen, isShowModel, setIsShowModel, coordArr, setCoordArr, editCoord, setEditCoord, logCategory, setLogCategory,visitDate, setVisitDate, category, setCategory, rating, setRating, description, setDescription, isDelMode, setIsDelMode, targetToDelete, setTargetToDelete, isShowStep, setIsShowStep, isEdit, setIsEdit }}>{children}</MapContext.Provider>;
 };
 
 // 自定義 Hook 用來使用 MapContext
